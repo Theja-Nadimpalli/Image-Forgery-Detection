@@ -25,8 +25,6 @@ function App() {
      <PredictionCard prediction={result.prediction} confidence={result.confidence} />
      <AnalysisSection original_image={result.original_image} ela_image={result.ela_image} />
      </div>
-
-      
     </>
 }
 

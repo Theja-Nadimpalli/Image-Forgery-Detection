@@ -40,8 +40,7 @@ def predict():
     # Generate ELA image
     ela_image = convert_to_ela_image(original_path)
 
-    # ===== ADDED =====
-    # Resize before sending to DenseNet201
+
     ela_image_resized = ela_image.resize((224, 224))
 
     ela_filename = f"ela_{original_filename}"
@@ -51,23 +50,15 @@ def predict():
         ela_filename
     )
 
-    # ===== CHANGED =====
     # Save resized ELA image instead of original ELA image
     ela_image_resized.save(ela_path)
 
-    # ===== ADDED =====
     # Run model prediction
     label, confidence = predict_image(
         ela_image_resized
     )
 
     return jsonify({
-
-
-        # ===== CHANGED =====
-        # Previously hardcoded:
-        # "prediction": "Original"
-        # "confidence": 0.95
 
         "prediction": label,
         "confidence": round(confidence, 2),

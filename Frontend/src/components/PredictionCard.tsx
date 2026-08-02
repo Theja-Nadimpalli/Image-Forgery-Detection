@@ -1,82 +1,97 @@
-interface PredictionProps {
+type Result = {
   prediction: string | null;
+  verdict: string | null;
   confidence: number | null;
+  tampered_area_percent: number | null;
+};
+
+interface Props {
+  result: Result;
 }
 
-export default function PredictionCard({
-  prediction,
-  confidence,
-}: PredictionProps) {
-  const hasResult = prediction !== null;
+export default function ResultSection({ result }: Props) {
+  const prediction = result.prediction ?? "--/--";
+  const verdict = result.verdict ?? "--/--";
+  const confidence =
+    result.confidence !== null ? `${result.confidence}%` : "--/--";
+  const area =
+    result.tampered_area_percent !== null
+      ? `${result.tampered_area_percent}%`
+      : "--/--";
 
-  return <div className="bg-purple-50">
-    <div className="border rounded-xl p-8 flex justify-between items-center 
-    mx-20 bg-gray-50 px-20">
+  return (
+    <div className="border-2 border-dashed rounded-xl border-white mx-20 p-10">
+    <div className="text-[25px] text-white font-bold mb-5">Model Analysis :-</div>
+    <section className="max-w-7xl mx-auto">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
 
-      <div>
-        <p className="text-black font-semibold mb-1 text-[20px]">
-          Prediction
-        </p>
+        {/* Prediction */}
+        <div className="bg-[#111827] border border-[#23263A] rounded-2xl p-6">
+          <p className="text-gray-400 text-[15px] font-bold">Model Prediction</p>
 
-        <h2
-          className={`text-[15px] font-bold ${
-            prediction === "FORGED"
-              ? "text-red-500"
-              : prediction === "AUTHENTIC"
-              ? "text-green-500"
-              : "text-gray-400"
-          }`}
-        >
-          {prediction || "Waiting for Analysis..."}
-        </h2>
+          <h2
+            className={`mt-5 text-[15px] font-bold ${
+              prediction === "forged"
+                ? "text-red-500"
+                : prediction === "authentic"
+                ? "text-green-400"
+                : "text-gray-300"
+            }`}
+          >
+            {prediction.toUpperCase()}
+          </h2>
+        </div>
+
+        {/* Confidence */}
+        <div className="bg-[#111827] border border-[#23263A] rounded-2xl p-6">
+          <p className="text-gray-400 text-[15px] font-bold">Confidence</p>
+
+          <h2 className="mt-5 text-[15px] font-bold text-violet-400">
+            {confidence}
+          </h2>
+        </div>
+
+        {/* Forged Area */}
+        <div className="bg-[#111827] border border-[#23263A] rounded-2xl p-6">
+          <p className="text-gray-400 text-[15px] font-bold">Predicted Forged Area</p>
+
+          <h2 className="mt-5 text-[15px] font-bold text-pink-500">
+            {area}
+          </h2>
+        </div>
+
+        {/* Final Verdict */}
+        <div className="bg-[#111827] border border-[#23263A] rounded-2xl p-6">
+          <p className="text-gray-400 text-[15px] font-bold">Final Verdict</p>
+
+          <h2
+            className={`mt-5 text-[15px] font-bold ${
+              verdict === "forged"
+                ? "text-red-500"
+                : verdict === "authentic"
+                ? "text-green-400"
+                : "text-gray-300"
+            }`}
+          >
+            {verdict.toUpperCase()}
+          </h2>
+
+          {result.verdict !== null && (
+            <span
+              className={`inline-block mt-4 px-3 py-1 rounded-full text-xs ${
+                verdict === "forged"
+                  ? "bg-red-500/20 text-red-300"
+                  : "bg-green-500/20 text-green-300"
+              }`}
+            >
+              {verdict === "forged"
+                ? "Forgery Detected"
+                : "No Forgery Detected"}
+            </span>
+          )}
+        </div>
       </div>
-
-      {/* Confidence */}
-      <div>
-        <p className="text-black font-semibold mb-1 text-[20px]">
-          Confidence Score
-        </p>
-
-        <h2
-          className={`text-[15px] font-bold ${
-            hasResult
-              ? "text-indigo-600"
-              : "text-gray-400"
-          }`}
-        >
-          {confidence !== null
-            ? `${confidence.toFixed(2)}%`
-            : "--"}
-        </h2>
-      </div>
-
-      {/* Description */}
-      <div>
-        <p className="text-[17px] text-gray-700">
-          This image is likely to be
-        </p>
-
-        <p
-          className={`font-bold  ${
-            prediction === "FORGED"
-              ? "text-red-500"
-              : prediction === "AUTHENTIC"
-              ? "text-green-500"
-              : "text-gray-400"
-          }`}
-        >
-          {prediction || "--"}
-        </p>
-
-        <p className="text-gray-500 mt-3">
-          {hasResult
-            ? prediction === "FORGED"
-              ? "Our model has detected manipulated regions."
-              : "Our model found no signs of tampering."
-            : "Upload an image and click Analyze Image."}
-        </p>
-      </div>
-
+    </section>
     </div>
-  </div>;
+  );
 }

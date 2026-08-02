@@ -3,10 +3,15 @@ import axios from "axios";
 
 interface UploadSectionProps {
   result: {
-    prediction: string | null;
-    confidence: number | null;
-    original_image: string | null;
-    ela_image: string | null;
+  prediction: string | null;
+  verdict: string | null;
+  confidence: number | null;
+  threshold: number | null;
+  tampered_area_percent: number | null;
+  p_forged: number | null;
+  ela_png_base64: string | null;
+  mask_png_base64: string | null;
+  overlay_png_base64: string | null;
   };
 
   setResult: (x: any) => void;
@@ -62,18 +67,18 @@ export default function UploadSection(props: UploadSectionProps) {
     setPreviewUrl(URL.createObjectURL(file));
   };
 
-  return <div className="bg-purple-50 pb-5">
+  return <div className="bg-black pb-5">
     <div className="w-full max-w-2xl mx-auto py-5">
       <label
         htmlFor="file-upload"
         className="
           flex flex-col items-center justify-center
           h-80
-          border-2 border-dashed border-indigo-300
+          border-2 border-dashed border-white
           rounded-xl
-          bg-gray-50
+          bg-black
           cursor-pointer
-          hover:bg-gray-100
+          hover:bg-gray-800
           transition
         "
       >
@@ -85,7 +90,7 @@ export default function UploadSection(props: UploadSectionProps) {
               className="max-h-48 rounded-lg object-contain mb-4"
             />
 
-            <p className="font-medium text-gray-700">
+            <p className="font-medium text-white">
               {selectedFile?.name}
             </p>
 
@@ -109,11 +114,11 @@ export default function UploadSection(props: UploadSectionProps) {
               />
             </svg>
 
-            <p className="text-gray-700 font-medium">
+            <p className="text-white font-medium">
               Drag & Drop your image here
             </p>
 
-            <p className="text-gray-400 text-sm my-2">
+            <p className="text-white text-sm my-2">
               or
             </p>
 

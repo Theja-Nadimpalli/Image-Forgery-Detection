@@ -14,7 +14,7 @@ BASELINE_MODEL_PATH = f"{DATA_DIR}/final_image_forgery_detector.keras"
 TWO_STREAM_MODEL_PATH = f"{DATA_DIR}/two_stream_forgery_detector.keras"
 LOCALIZER_MODEL_PATH = f"{DATA_DIR}/forgery_localizer_unet.keras"
 
-USE_TWO_STREAM = False  # True = detect with the RGB+ELA two-stream model instead of the baseline
+USE_TWO_STREAM = False  
 
 IMG_SIZE = (224, 224)
 SEG_SIZE = 256
@@ -23,16 +23,16 @@ STD_QUALITY = 95
 THRESHOLD = 0.5
 
 # --- decision fusion (NEW) ---
-UNCERTAIN_LOW = 0.40    # below this, classifier confidently says authentic
-UNCERTAIN_HIGH = 0.60   # above this, classifier confidently says forged
-AREA_TIEBREAK_PCT = 15.0  # inside the band: forged if tampered area exceeds this
-                          # calibrate this value with the notebook experiment!
+UNCERTAIN_LOW = 0.40    
+UNCERTAIN_HIGH = 0.60  
+AREA_TIEBREAK_PCT = 15.0  
+                          
 
 app = Flask(__name__)
 CORS(app)  # lets your Vite frontend (port 5173) call this API
 app.config["MAX_CONTENT_LENGTH"] = 16 * 1024 * 1024
 
-# ---------------- load models once at startup ----------------
+
 print("Loading models ...")
 detector = keras.models.load_model(
     TWO_STREAM_MODEL_PATH if USE_TWO_STREAM else BASELINE_MODEL_PATH
@@ -41,7 +41,6 @@ localizer = keras.models.load_model(LOCALIZER_MODEL_PATH, compile=False)
 print(f"Models ready (detector: {'two-stream' if USE_TWO_STREAM else 'baseline'}).")
 
 
-# ---------------- helpers (identical math to the notebook) ----------------
 def standardize(pil_img):
     buf = io.BytesIO()
     pil_img.convert("RGB").save(buf, format="JPEG", quality=STD_QUALITY)
@@ -102,9 +101,9 @@ def analyze():
     x_seg = np.expand_dims(
         np.asarray(std.resize((SEG_SIZE, SEG_SIZE)), np.float32), 0
     )
-    mask = localizer.predict(x_seg, verbose=0)[0, :, :, 0]  # (256, 256) in [0, 1]
+    mask = localizer.predict(x_seg, verbose=0)[0, :, :, 0]  
 
-    # ---- decision fusion (NEW): prediction vs final verdict ----
+ 
     tampered_pct = float((mask > 0.5).mean() * 100)
 
     prediction = "forged" if p_forged > THRESHOLD else "authentic"  # classifier alone
@@ -141,8 +140,6 @@ def analyze():
 
 
 if __name__ == "__main__":
-    # use_reloader=False: the debug reloader would start the app twice
-    # and load the models twice.
     app.run(host="0.0.0.0", port=5000, debug=True, use_reloader=False)
 
 # python -m venv venv

@@ -48,9 +48,6 @@ export default function UploadSection(props: UploadSectionProps) {
     console.log(response.data);
     props.setResult(response.data);
 
-    // Later:
-    // setResult(response.data);
-
   } catch (error) {
     console.error(error);
   }

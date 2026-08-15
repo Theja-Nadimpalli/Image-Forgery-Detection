@@ -28,5 +28,14 @@ pipeline {
 
             }
         }
+        stage("kubernates part"){
+            steps{
+               bat "call kubectl apply -f K8_yaml_files/frontend-deployment.yaml"
+               bat "call kubectl apply -f K8_yaml_files/frontend-service.yaml"
+               echo "applied"
+               bat "call kubectl port-forward service/frontend 8000:8000"
+               echo "success-successful"
+            }
+        }
     }
 }

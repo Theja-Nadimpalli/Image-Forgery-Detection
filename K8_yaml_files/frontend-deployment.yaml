@@ -19,6 +19,6 @@ spec :
       spec :
          containers :
             - name : frontend
-              image : thejaraju/node-frontend:init
+              image : thejaraju/frontend-2:init
               ports :
                  - containerPort : 5173

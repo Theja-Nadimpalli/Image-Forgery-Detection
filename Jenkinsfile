@@ -22,7 +22,7 @@ pipeline {
 
         stage("docker push"){
             steps{
-               bat 'docker login -u %DOCKER_CREDS_USR% -p %DOCKER_CREDS_PSW%'
+               bat 'docker login -u %DOCKER_CREDS_USR% -p %DOCKER_CREDS_PSW% --password-stdin'
                bat 'docker push %DOCKER_CREDS_USR%/frontend-2:init'
                echo "pushing completed"
 
@@ -30,8 +30,8 @@ pipeline {
         }
         stage("kubernates part"){
             steps{
-               bat "call kubectl apply -f K8_yaml_files/frontend-deployment.yaml"
-               bat "call kubectl apply -f K8_yaml_files/frontend-service.yaml"
+               bat 'kubectl --kubeconfig="C:\\Users\\theja\\.kube\\config" apply -f K8_yaml_files/frontend-deployment.yaml'
+               bat 'kubectl --kubeconfig="C:\\Users\\theja\\.kube\\config" apply -f K8_yaml_files/frontend-service.yaml'
                echo "applied"
                bat "call kubectl port-forward service/frontend 8000:8000"
                echo "success-successful"

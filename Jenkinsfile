@@ -22,7 +22,7 @@ pipeline {
 
         stage("docker push"){
             steps{
-               bat 'docker login -u %DOCKER_CREDS_USR% -p %DOCKER_CREDS_PSW% --password-stdin'
+               bat 'docker login -u %DOCKER_CREDS_USR% -p %DOCKER_CREDS_PSW%'
                bat 'docker push %DOCKER_CREDS_USR%/frontend-2:init'
                echo "pushing completed"
 

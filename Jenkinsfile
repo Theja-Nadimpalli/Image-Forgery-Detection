@@ -34,6 +34,7 @@ pipeline {
                bat 'kubectl --kubeconfig="C:\\Users\\theja\\.kube\\config" apply -f K8_yaml_files/frontend-service.yaml'
                echo "applied"
                echo "success-successful"
+               echo "triggered action done"
             }
         }
     }

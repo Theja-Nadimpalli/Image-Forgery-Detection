@@ -7,7 +7,7 @@ Backend/uploads/
 Backend/results/
 Backend/models/
 Backend/checkpoints/
-Backend/data/
+*.keras
 
 Frontend/node_modules/
 Frontend/dist/

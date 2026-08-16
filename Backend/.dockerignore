@@ -1,0 +1,40 @@
+# Python cache
+__pycache__/
+*.py[cod]
+*.pyo
+*.keras
+
+# Virtual environment
+venv/
+.venv/
+env/
+
+# Git
+.git/
+.gitignore
+
+# Environment/secrets
+.env
+.env.*
+
+# Development files
+.vscode/
+.idea/
+
+# Tests / local development
+tests/
+pytest_cache/
+
+# Logs
+*.log
+
+# Local uploads/results
+uploads/
+results/
+
+# Jupyter
+.ipynb_checkpoints/
+
+# OS files
+.DS_Store
+Thumbs.db
